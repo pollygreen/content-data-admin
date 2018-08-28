@@ -14,6 +14,6 @@ class MetricsController < ApplicationController
       from: params[:from],
       to: params[:to],
       metric: params[:metric]
-    ).to_hash
+    )
   end
 end
