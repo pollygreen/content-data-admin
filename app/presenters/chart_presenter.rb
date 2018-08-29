@@ -2,47 +2,51 @@ class ChartPresenter
   attr_reader :json
 
   def initialize(json)
-    @json = json.with_indifferent_access
+    @json = json.to_h.with_indifferent_access
   end
 
-  def metric
-    json.keys.first
+  def from(metric_name)
+    json[metric_name].first[:date]
   end
 
-  def from
-    json.values.flatten.first[:date]
+  def to(metric_name)
+    json[metric_name].last[:date]
   end
 
-  def to
-    json.values.flatten.last[:date]
+  def human_friendly_metric(metric_name)
+    (metric_name).tr('_', ' ').capitalize
   end
 
-  def human_friendly_metric
-    metric.tr('_', ' ').capitalize
+  def charts_data
+    json.keys.map do |metric_name|
+      chart_data(metric_name)
+    end
   end
 
-  def chart_data
+
+
+  def chart_data(metric_name)
     {
-      caption: "#{human_friendly_metric} from #{from.to_date} to #{to.to_date}",
-      chart_label: "#{human_friendly_metric} chart",
-      table_label: "#{human_friendly_metric} table",
-      chart_id: "#{metric}_#{from}-#{to}_chart",
-      table_id: "#{metric}_#{from}-#{to}_table",
-      keys: keys,
+      caption: "#{human_friendly_metric(metric_name)} from #{from(metric_name).to_date} to #{to(metric_name).to_date}",
+      chart_label: "#{human_friendly_metric(metric_name)} chart",
+      table_label: "#{human_friendly_metric(metric_name)} table",
+      chart_id: "#{metric_name}_#{from(metric_name)}-#{to(metric_name)}_chart",
+      table_id: "#{metric_name}_#{from(metric_name)}-#{to(metric_name)}_table",
+      keys: keys(metric_name),
       rows: [
         {
-          values: values
+          values: values(metric_name)
         }
       ]
     }
   end
 
-  def keys
-    dates = json[metric].map { |hash| hash['date'] }
+  def keys(metric_name)
+    dates = json[metric_name].map { |hash| hash['date'] }
     dates.map { |date| date.last(5) }
   end
 
-  def values
-    json[metric].map { |hash| hash['value'] }
+  def values(metric_name)
+    json[metric_name].map { |hash| hash['value'] }
   end
 end
