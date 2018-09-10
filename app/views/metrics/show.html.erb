@@ -9,8 +9,17 @@
   <%= render :partial => 'metadata_row', locals: {label: 'URL', value:  @summary.base_path } %>
 </div>
 
-Unique Pageviews: <%= @summary.unique_pageviews %>
-<%= render_chart @summary.unique_pageviews_series %>
+<div class="page-metrics">
+  Unique Pageviews: <%= @summary.unique_pageviews %>
+  <%= render_chart @summary.unique_pageviews_series %>
+</div>
 
-Pageviews: <%= @summary.pageviews %>
-<%= render_chart @summary.pageviews_series %>
+<div class="page-metrics">
+  Pageviews: <%= @summary.pageviews %>
+  <%= render_chart @summary.pageviews_series %>
+</div>
+
+<div class="page-metrics">
+  On page searches: <%= @summary.number_of_internal_searches %>
+
+</div>

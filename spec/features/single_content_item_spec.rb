@@ -17,7 +17,9 @@ RSpec.describe '/metrics/base/path', type: :feature do
         first_published_at: '2018-02-01T00:00:00.000Z',
         public_updated_at: '2018-04-25T00:00:00.000Z',
         primary_organisation_title: 'The ministry',
-        document_type: "news_story"
+        document_type: "news_story",
+        number_of_internal_searches: 999,
+        satisfaction_score: 888
       })
 
     content_data_api_has_timeseries(base_path: 'base/path',
@@ -46,6 +48,14 @@ RSpec.describe '/metrics/base/path', type: :feature do
 
   it 'renders the metric for pageviews' do
     expect(page).to have_content('200000')
+  end
+
+  it 'renders the number of page searches' do
+    expect(page).to have_content('999')
+  end
+
+  it 'renders the number for satisfaction score' do
+    expect(page).to have_content('888')
   end
 
   it 'renders the page title' do
