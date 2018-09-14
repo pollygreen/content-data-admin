@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-two-thirds">
     <%= render "components/info-metric", {
         name: title,
-        figure: number_with_delimiter(value, :delimiter => ','),
+        figure: value,
         context: "Number of sessions during which the page was viewed at least once",
         trend_percentage: 0,
         period: "From previous 30 days",
